@@ -1,0 +1,21 @@
+.red {
+    color: red;
+    font-size: 70px;
+    font-weight: bold;
+    background: aqua;
+    width: 350px;
+    height: 120px;
+    border-radius: 7px;
+    margin-bottom: 10px;
+}
+
+.display {
+    font-size: 70px;
+    font-weight: bold;
+    background: aqua;
+    width: 350px;
+    height: 120px;
+    color: #282c34;
+    border-radius: 7px;
+    margin-bottom: 10px;
+}
