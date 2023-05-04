@@ -33,8 +33,7 @@ function App() {
 
     }, [])
 
-    console.log(minValue, "minValue")
-    console.log(maxValue, "maxValue")
+
 
     const onIncreaseHandler = () => {
         setCount(count => count + 1)
@@ -57,14 +56,19 @@ function App() {
   return (
     <div className="App">
         <div className='Box'>
-      <Display value={count} maxValue={maxValue}/>
+      <Display value={count} maxValue={maxValue} minValue={minValue}/>
             <div className={'buttons'}>
                 <SuperButton name={'inc'} callBack={onIncreaseHandler} disabled={count === maxValue}/>
                 <SuperButton name={'reset'} callBack={onResetHandler} disabled={count === minValue}/>
             </div>
         </div>
         <div className='Box'>
-            <SetterDisplay maxValue={maxValue} minValue={minValue} handleSettingsChange={handleSettingsChange}/>
+            <SetterDisplay maxValue={maxValue}
+                           minValue={minValue}
+                           handleSettingsChange={handleSettingsChange}
+                           setMinValue={setMinValue}
+                           setMaxValue={setMaxValue}
+            />
         </div>
     </div>
   );

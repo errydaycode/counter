@@ -19,3 +19,18 @@
     border-radius: 7px;
     margin-bottom: 10px;
 }
+
+.incorrect{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: red;
+    font-size: 35px;
+    font-weight: bold;
+    background: aqua;
+    width: 350px;
+    height: 120px;
+    border-radius: 7px;
+    margin-bottom: 10px;
+}
