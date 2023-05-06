@@ -6,68 +6,95 @@ import SuperButton from "./components/SuperButton";
 import {SetterDisplay} from "./components/SetterDisplay";
 
 function App() {
-    const [minValue, setMinValue] = useState(0)
-    const [maxValue, setMaxValue] = useState(5)
-    const [count, setCount] = useState(0)
 
 
 
-    useEffect(()=> {
-        let minValueAsString = localStorage.getItem('minValue')
-        if (minValueAsString) {
-            let newValueMinimum = JSON.parse(minValueAsString)
-            setMinValue(newValueMinimum)
+    let [valueSettings, setValueSettings] = useState({
+        minValue: 0,
+        maxValue: 5,
+    })
+    const [increment, setIncrement] = useState<number>(0);
+
+
+
+
+    useEffect(() => {
+        let newStartValueStr = localStorage.getItem("startValue")
+        let newMaxValueStr = localStorage.getItem("maxValue")
+        if (newStartValueStr && newMaxValueStr) {
+            let newStartValue = JSON.parse(newStartValueStr)
+            let newMaxValue = JSON.parse(newMaxValueStr)
+            setValueSettings({...valueSettings, minValue: newStartValue, maxValue: newMaxValue})
+            setIncrement(valueSettings.minValue)
         }
-
-
-    },[] )
-
-
-    useEffect(()=> {
-        let maxValueAsString = localStorage.getItem('maxValue')
-        if (maxValueAsString) {
-            let newValueMaximun = JSON.parse(maxValueAsString)
-            setMaxValue(newValueMaximun)
-        }
-
-
     }, [])
 
 
+    const setSettingsToStorage = () => {
+        localStorage.setItem('startValue', JSON.stringify(valueSettings.minValue));
+        localStorage.setItem('maxValue', JSON.stringify(valueSettings.maxValue));
+        setIncrement(valueSettings.minValue);
+    }
 
-    const onIncreaseHandler = () => {
-        setCount(count => count + 1)
+
+    useEffect(()=> {
+        let valueAsString = localStorage.getItem('counterValue')
+        if (valueAsString) {
+            let newValue = JSON.parse(valueAsString)
+            setIncrement(newValue)
+        }
+    }, [])
+
+
+    useEffect( () => {
+        localStorage.setItem('counterValue', JSON.stringify(increment))
+    }, [increment])
+
+
+
+    const incrementCounter = () => {
+        setIncrement(increment + 1)
     }
 
     const onResetHandler = () => {
-        setCount(minValue)
+        setIncrement(valueSettings.minValue)
+
+    }
+
+    const setMinValue = (startValue: number) => {
+        setValueSettings({...valueSettings, minValue: startValue})
+    }
+    const setMaxValue = (maxValue: number) => {
+        setValueSettings({...valueSettings, maxValue: maxValue})
     }
 
 
-    function handleSettingsChange(newMinValue: number, newMaxValue: number) {
-        setMinValue(newMinValue);
-        setMaxValue(newMaxValue);
-        setCount(minValue)
-        localStorage.setItem('minValue', JSON.stringify(newMinValue))
-        localStorage.setItem('maxValue', JSON.stringify(newMaxValue))
-    }
+       // function handleSettingsChange(newMinValue: number, newMaxValue: number) {
+       //      setMinValue(newMinValue);
+       //      setMaxValue(newMaxValue);
+       //      setCount(minValue)
+       //      localStorage.setItem('minValue', JSON.stringify(newMinValue))
+       //      localStorage.setItem('maxValue', JSON.stringify(newMaxValue))
+       //  }
 
 
   return (
     <div className="App">
         <div className='Box'>
-      <Display value={count} maxValue={maxValue} minValue={minValue}/>
+      <Display value={increment} maxValue={valueSettings.maxValue} minValue={valueSettings.minValue}/>
             <div className={'buttons'}>
-                <SuperButton name={'inc'} callBack={onIncreaseHandler} disabled={count === maxValue}/>
-                <SuperButton name={'reset'} callBack={onResetHandler} disabled={count === minValue}/>
+                <SuperButton name={'inc'} callBack={incrementCounter} disabled={increment === valueSettings.maxValue}/>
+                <SuperButton name={'reset'} callBack={onResetHandler} disabled={increment === valueSettings.minValue}/>
             </div>
         </div>
         <div className='Box'>
-            <SetterDisplay maxValue={maxValue}
-                           minValue={minValue}
-                           handleSettingsChange={handleSettingsChange}
+            <SetterDisplay
+                                inc={increment}
+                            maxValue={valueSettings.maxValue}
+                           minValue={valueSettings.minValue}
                            setMinValue={setMinValue}
                            setMaxValue={setMaxValue}
+                           setSettingsToStorage={setSettingsToStorage}
             />
         </div>
     </div>

@@ -1,14 +1,17 @@
 import React, {ChangeEvent} from 'react';
 import './Setter.css'
 import SuperButton from "./SuperButton";
+import {Input} from "./Input";
 
 
 type SetterDisplayPropsType = {
+    inc: number
     minValue: number
     maxValue: number
     setMinValue: (value: number) => void
     setMaxValue: (value: number) => void
-    handleSettingsChange: (min: number, max: number) => void
+    setSettingsToStorage: () => void
+    // handleSettingsChange: (min: number, max: number) => void
 }
 
 
@@ -18,23 +21,27 @@ export const SetterDisplay = (
         maxValue,
         setMaxValue,
         setMinValue,
-        handleSettingsChange
+        ...props
+
     }
         : SetterDisplayPropsType) => {
 
 
-    function handleMinValueChange(event: ChangeEvent<HTMLInputElement>) {
-        console.log(event.target.value)
-        setMinValue(parseInt(event.target.value));
-    }
+    // function handleMinValueChange(event: ChangeEvent<HTMLInputElement>) {
+    //     console.log(event.target.value)
+    //     setMinValue(parseInt(event.target.value));
+    // }
+    //
+    // function handleMaxValueChange(event: ChangeEvent<HTMLInputElement>) {
+    //     setMaxValue(parseInt(event.target.value));
+    // }
+    //
+    // function handleSubmit() {
+    //     handleSettingsChange(minValue, maxValue);
+    // }
 
-    function handleMaxValueChange(event: ChangeEvent<HTMLInputElement>) {
-        setMaxValue(parseInt(event.target.value));
-    }
 
-    function handleSubmit() {
-        handleSettingsChange(minValue, maxValue);
-    }
+
 
     const inputClassName = minValue < 0 || minValue === maxValue ? 'error' : 'centered'
 
@@ -43,18 +50,24 @@ export const SetterDisplay = (
             <div className={'setDisplay'}>
 
                 <div className={'values'}>
-                    max value: <input type="number" className={inputClassName} onChange={handleMaxValueChange}
-                                      value={maxValue}/>
+                    <Input
+                        className={inputClassName}
+                        title={"Start-Value"}
+                        value={minValue}
+                        callBack={setMinValue}/>
                 </div>
 
                 <div className={'values'}>
-                    start value: <input type="number" className={inputClassName} onChange={handleMinValueChange}
-                                        value={minValue}/>
+                    <Input
+                        className={inputClassName}
+                        value={maxValue}
+                        title={"Max-Value"}
+                        callBack={setMaxValue}/>
                 </div>
 
             </div>
             <div className={'buttons'}>
-                <SuperButton name={'set'} callBack={handleSubmit} disabled={false}/>
+                <SuperButton name={'set'} callBack={props.setSettingsToStorage} disabled={false}/>
             </div>
         </>
 
