@@ -5,18 +5,31 @@ type DisplayPropsType={
     value: number
     maxValue: number
     minValue: number
+    isSettingValues: boolean
 }
 
 
 export const Display = (props: DisplayPropsType) => {
+    const { value, maxValue, minValue, isSettingValues } = props;
+
+
     return (
 
-            props.minValue < 0 || props.maxValue === props.minValue ?
+            minValue < 0 || maxValue === minValue || minValue > maxValue ?
                 <div className={'incorrect'}>Incorrect Value!</div>
                 :
 
-            <div className={props.value === props.maxValue ? 'red' : 'display'}>
-                {props.value}
+            <div className={value === maxValue ? 'red' : 'display'}>
+
+
+                {isSettingValues
+
+                    ?
+                    <div className={'enter'}>
+                        Enter values and press "set"
+                    </div>
+
+                    : value}
             </div>
 
 

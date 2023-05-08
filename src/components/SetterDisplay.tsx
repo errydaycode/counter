@@ -1,6 +1,5 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import './Setter.css'
-import SuperButton from "./SuperButton";
 import {Input} from "./Input";
 
 
@@ -11,7 +10,8 @@ type SetterDisplayPropsType = {
     setMinValue: (value: number) => void
     setMaxValue: (value: number) => void
     setSettingsToStorage: () => void
-    // handleSettingsChange: (min: number, max: number) => void
+    turnOnSettings: ()=> void
+
 }
 
 
@@ -43,7 +43,7 @@ export const SetterDisplay = (
 
 
 
-    const inputClassName = minValue < 0 || minValue === maxValue ? 'error' : 'centered'
+    const inputClassName = minValue < 0 || minValue === maxValue || minValue > maxValue ? 'error' : 'centered'
 
     return (
         <>
@@ -54,7 +54,10 @@ export const SetterDisplay = (
                         className={inputClassName}
                         title={"Start-Value"}
                         value={minValue}
-                        callBack={setMinValue}/>
+                        callBack={setMinValue}
+                        turnOnSettings={props.turnOnSettings}
+                    />
+
                 </div>
 
                 <div className={'values'}>
@@ -62,13 +65,13 @@ export const SetterDisplay = (
                         className={inputClassName}
                         value={maxValue}
                         title={"Max-Value"}
-                        callBack={setMaxValue}/>
+                        callBack={setMaxValue}
+                        turnOnSettings={props.turnOnSettings}
+                    />
                 </div>
 
             </div>
-            <div className={'buttons'}>
-                <SuperButton name={'set'} callBack={props.setSettingsToStorage} disabled={false}/>
-            </div>
+
         </>
 
 

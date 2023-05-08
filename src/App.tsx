@@ -8,15 +8,15 @@ import {SetterDisplay} from "./components/SetterDisplay";
 function App() {
 
 
-
     let [valueSettings, setValueSettings] = useState({
         minValue: 0,
         maxValue: 5,
     })
+
+
     const [increment, setIncrement] = useState<number>(0);
-
-
-
+    const [isSettingValues, setIsSettingValues] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(true)
 
     useEffect(() => {
         let newStartValueStr = localStorage.getItem("startValue")
@@ -34,6 +34,8 @@ function App() {
         localStorage.setItem('startValue', JSON.stringify(valueSettings.minValue));
         localStorage.setItem('maxValue', JSON.stringify(valueSettings.maxValue));
         setIncrement(valueSettings.minValue);
+        setIsSettingValues(false)
+        setIsDisabled(true)
     }
 
 
@@ -51,7 +53,6 @@ function App() {
     }, [increment])
 
 
-
     const incrementCounter = () => {
         setIncrement(increment + 1)
     }
@@ -64,24 +65,29 @@ function App() {
     const setMinValue = (startValue: number) => {
         setValueSettings({...valueSettings, minValue: startValue})
     }
+
     const setMaxValue = (maxValue: number) => {
         setValueSettings({...valueSettings, maxValue: maxValue})
     }
 
 
-       // function handleSettingsChange(newMinValue: number, newMaxValue: number) {
-       //      setMinValue(newMinValue);
-       //      setMaxValue(newMaxValue);
-       //      setCount(minValue)
-       //      localStorage.setItem('minValue', JSON.stringify(newMinValue))
-       //      localStorage.setItem('maxValue', JSON.stringify(newMaxValue))
-       //  }
+    const turnOnSettings = () => {
+        setIsSettingValues(true);
+        setIsDisabled(false)
+    };
 
+    // const handleSetClick = () => {
+    //     setIsSettingValues(false);
+    // }
 
   return (
     <div className="App">
         <div className='Box'>
-      <Display value={increment} maxValue={valueSettings.maxValue} minValue={valueSettings.minValue}/>
+      <Display value={increment}
+               maxValue={valueSettings.maxValue}
+               minValue={valueSettings.minValue}
+               isSettingValues={isSettingValues}
+      />
             <div className={'buttons'}>
                 <SuperButton name={'inc'} callBack={incrementCounter} disabled={increment === valueSettings.maxValue}/>
                 <SuperButton name={'reset'} callBack={onResetHandler} disabled={increment === valueSettings.minValue}/>
@@ -95,7 +101,12 @@ function App() {
                            setMinValue={setMinValue}
                            setMaxValue={setMaxValue}
                            setSettingsToStorage={setSettingsToStorage}
+                                turnOnSettings={turnOnSettings}
             />
+
+            <div className={'buttons'}>
+                <SuperButton name={'set'} callBack={setSettingsToStorage} disabled={isDisabled}/>
+            </div>
         </div>
     </div>
   );
