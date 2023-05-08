@@ -1,7 +1,7 @@
 import React from 'react';
 import './Display.css'
 
-type DisplayPropsType={
+type DisplayPropsType = {
     value: number
     maxValue: number
     minValue: number
@@ -10,26 +10,25 @@ type DisplayPropsType={
 
 
 export const Display = (props: DisplayPropsType) => {
-    const { value, maxValue, minValue, isSettingValues } = props;
+    const {value, maxValue, minValue, isSettingValues} = props;
 
 
     return (
 
-            minValue < 0 || maxValue === minValue || minValue > maxValue ?
-                <div className={'incorrect'}>Incorrect Value!</div>
-                :
+        minValue < 0 || maxValue === minValue || minValue > maxValue ?
+            <div className={'incorrect'}>Incorrect Value!</div>
+            :
 
-            <div className={value === maxValue ? 'red' : 'display'}>
-
+            <div>
 
                 {isSettingValues
-
                     ?
                     <div className={'enter'}>
                         Enter values and press "set"
                     </div>
-
-                    : value}
+                    :
+                    <div className={value === maxValue ? 'red' : 'display'}>{value}</div>
+                }
             </div>
 
 

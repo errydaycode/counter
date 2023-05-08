@@ -14,7 +14,6 @@ export const Input = (props:InputPropsType) => {
     const onChangeCallBack = (e:ChangeEvent<HTMLInputElement>) =>{
         props.callBack(Number(e.currentTarget.value))
         props.turnOnSettings()
-
     }
 
     return (
