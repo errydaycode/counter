@@ -1,8 +1,11 @@
 import React from 'react';
 import './Display.css'
+import {useSelector} from "react-redux";
+import {AppRootType} from "../state/store";
+import {CounterStateType} from "../state/increment-reducer";
 
 type DisplayPropsType = {
-    value: number
+
     maxValue: number
     minValue: number
     isSettingValues: boolean
@@ -10,8 +13,10 @@ type DisplayPropsType = {
 
 
 export const Display = (props: DisplayPropsType) => {
-    const {value, maxValue, minValue, isSettingValues} = props;
+    const { maxValue, minValue, isSettingValues} = props;
 
+
+    const value = useSelector<AppRootType, CounterStateType>(state => state.increment)
 
     return (
 
@@ -27,7 +32,7 @@ export const Display = (props: DisplayPropsType) => {
                         Enter values and press "set"
                     </div>
                     :
-                    <div className={value === maxValue ? 'red' : 'display'}>{value}</div>
+                    <div className={value.counterValue === maxValue ? 'red' : 'display'}>{value.counterValue}</div>
                 }
             </div>
 

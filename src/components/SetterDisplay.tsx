@@ -1,30 +1,44 @@
 import React from 'react';
 import './Setter.css'
 import {Input} from "./Input";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootType} from "../state/store";
+import {ValueSettingsType} from "../App";
+import {setMaxValueAC, setMinValueAC} from "../state/value-settings-reducer";
 
 
 type SetterDisplayPropsType = {
-    minValue: number
-    maxValue: number
-    setMinValue: (value: number) => void
-    setMaxValue: (value: number) => void
+
     turnOnSettings: ()=> void
 
 }
 
 export const SetterDisplay = (
     {
-        minValue,
-        maxValue,
-        setMaxValue,
-        setMinValue,
+
+
         ...props
 
     }
         : SetterDisplayPropsType) => {
 
 
-    const inputClassName = minValue < 0 || minValue === maxValue || minValue > maxValue ? 'error' : 'centered'
+    const valueSettings = useSelector<AppRootType, ValueSettingsType>(state => state.valueSettings)
+    const dispatch = useDispatch()
+
+    const setMinValue = (minValue: number) => {
+        dispatch(setMinValueAC(minValue))
+        props.turnOnSettings()
+    }
+
+    const setMaxValue = (maxValue: number) => {
+        dispatch(setMaxValueAC(maxValue))
+        props.turnOnSettings()
+    }
+
+
+
+    const inputClassName = valueSettings.minValue < 0 || valueSettings.minValue === valueSettings.maxValue || valueSettings.minValue > valueSettings.maxValue ? 'error' : 'centered'
 
 
     return (
@@ -35,9 +49,8 @@ export const SetterDisplay = (
                     <Input
                         className={inputClassName}
                         title={"Start-Value"}
-                        value={minValue}
+                        value={valueSettings.minValue}
                         callBack={setMinValue}
-                        turnOnSettings={props.turnOnSettings}
                     />
 
                 </div>
@@ -45,10 +58,9 @@ export const SetterDisplay = (
                 <div className={'values'}>
                     <Input
                         className={inputClassName}
-                        value={maxValue}
+                        value={valueSettings.maxValue}
                         title={"Max-Value"}
                         callBack={setMaxValue}
-                        turnOnSettings={props.turnOnSettings}
                     />
                 </div>
 
