@@ -9,7 +9,7 @@ export const initialState: CounterStateType = {
 }
 
 
-export const counterReducer = (state=initialState, action:ActionType) => {
+export const counterReducer = (state=initialState, action:ActionType): CounterStateType => {
     switch (action.type){
         case "INCREMENT-COUNTER":{
             return {...state, counterValue: state.counterValue + 1}
@@ -21,10 +21,11 @@ export const counterReducer = (state=initialState, action:ActionType) => {
     }
 }
 
-export type ActionType = incrementCounterACType | resetCounterACType
+export type ActionType = incrementCounterACType | resetCounterACType | setValuesFromLSACType
 
 export type incrementCounterACType = ReturnType<typeof incrementCounterAC>
 export type resetCounterACType = ReturnType<typeof resetCounterAC>
+export type setValuesFromLSACType = ReturnType<typeof setValuesFromLSAC>
 
 
 export const incrementCounterAC = () => {
@@ -37,5 +38,12 @@ export const resetCounterAC = (startValue:number) => {
     return{
         type:"RESET-COUNTER",
         startValue
+    }as const
+}
+
+export const setValuesFromLSAC = (lsValue:number) => {
+    return{
+        type:"SET-LOCAL-STORAGE-VALUES",
+        lsValue
     }as const
 }
